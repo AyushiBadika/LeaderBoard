@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Leader Board</title>
+    <script
+      src="https://kit.fontawesome.com/21c246e8b1.js"
+      crossorigin="anonymous"
+    ></script>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: sans-serif;
+      }
+
+      body {
+        background-color: rgb(221, 221, 221);
+      }
+      /* ADD PLAYER FORM */
+      .addPlayerForm input,
+      select {
+        width: 15%;
+        height: 36px;
+        border-radius: 4px;
+        padding-left: 12px;
+        font-size: 14px;
+        font-weight: normal;
+        border: 1px solid rgb(137, 151, 155);
+        transition: border-color 150ms ease-in-out 0s;
+        outline: none;
+        color: rgb(33, 49, 60);
+        background-color: rgb(255, 255, 255);
+        padding-right: 12px;
+      }
+
+      .addPlayerForm input:hover,
+      select:hover {
+        box-shadow: rgb(231 238 236) 0px 0px 0px 2px;
+      }
+
+      .addPlayer {
+        background-color: rgb(186, 186, 186);
+        padding: 1.25rem;
+        text-align: center;
+        border-bottom: 5px solid rgb(156, 154, 154);
+      }
+      .addPlayerForm button {
+        display: inline-block;
+        outline: 0;
+        appearance: none;
+        padding: 0px 12px;
+        border-radius: 4px;
+        text-decoration: none;
+        cursor: pointer;
+        background-color: rgb(249, 251, 250);
+        border: 1px solid rgb(137, 151, 155);
+        box-shadow: rgb(6 22 33 / 30%) 0px 1px 2px;
+        color: rgb(61, 79, 88);
+        font-size: 14px;
+        font-weight: 400;
+        height: 36px;
+        transition: all 150ms ease-in-out 0s;
+      }
+
+      .addPlayerForm button:hover {
+        color: rgb(61, 79, 88);
+        background-color: rgb(255, 255, 255);
+        border: 1px solid rgb(93, 108, 116);
+        box-shadow: rgb(0 0 0 / 30%) 0px 4px 4px,
+          rgb(231 238 236) 0px 0px 0px 3px;
+      }
+
+      /* ALL PLAYERS  */
+      .players {
+        padding-top: 1.5rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+
+      /* CHAMPIONS */
+      .championsCards {
+        display: flex;
+        gap: 2rem;
+        justify-content: center;
+        padding: 1.5rem;
+      }
+
+      .championCard img {
+        height: 50px;
+      }
+
+      .championCard {
+        background-color: rgb(244, 244, 244);
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 0.5rem;
+        width: 12.5rem;
+        box-shadow: 0 4px 5px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+        padding: 1rem;
+        border-radius: 0.5rem;
+      }
+
+      .championCard .cCountry {
+        text-transform: uppercase;
+        font-size: 0.9rem;
+      }
+
+      .championCard .cCountry img {
+        height: 12px;
+        width: auto;
+      }
+
+      .championCard .cName {
+        font-weight: 500;
+        text-transform: capitalize;
+      }
+      .championCard .cDelete {
+        position: absolute;
+        right: 1.25rem;
+        top: 1.25rem;
+      }
+      .championCard:hover {
+        box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25),
+          0 10px 10px rgba(0, 0, 0, 0.22);
+        /* transform: scale(1.05); */
+        transition: all 0.25s;
+      }
+
+      /* LEADERBOARD */
+      .leaderboard {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        place-items: center;
+      }
+
+      .leaderboard-header {
+        display: grid;
+        grid-template-columns: 1.5fr 3fr 2.5fr 2fr 2fr 1fr;
+        align-items: center;
+        width: 60rem;
+        padding: 0.5rem;
+        text-align: center;
+        font-weight: 600;
+      }
+
+      .leaderboardList {
+        background-color: rgb(244, 244, 244);
+        display: grid;
+        grid-template-columns: 1.5fr 3fr 2.5fr 2fr 2fr 1fr;
+        align-items: center;
+        border-radius: 0.5rem;
+        width: 60rem;
+        border: 1px solid rgb(93, 108, 116);
+        padding: 0.5rem;
+      }
+
+      .leaderboardList .name {
+        justify-self: start;
+        font-weight: 500;
+        text-transform: capitalize;
+      }
+
+      .leaderboardList .position {
+        margin-left: 1.25rem;
+      }
+      .leaderboardList .country {
+        text-transform: uppercase;
+        justify-self: center;
+      }
+
+      .leaderboardList .country img {
+        height: 12px;
+        width: auto;
+      }
+      .leaderboardList .scoreCombined {
+        justify-self: center;
+      }
+      .leaderboardList .date {
+        justify-self: center;
+      }
+
+      .leaderboardList .delete {
+        justify-self: center;
+      }
+
+      /* SCORE */
+      .scoreCombined,
+      .cScoreCombined {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 1rem;
+      }
+
+      .plus5,
+      .minus5 {
+        font-size: smaller;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-width: 1.75rem;
+        min-height: 1.75rem;
+        border: 2px solid black;
+        border-radius: 50%;
+      }
+
+      .plus5:active,
+      .minus5:active,
+      .deleteBtn:active {
+        transform: scale(0.9);
+      }
+
+      .formError {
+        margin-top: 1rem;
+        color: rgb(137, 0, 0);
+      }
+    </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="addPlayer">
+      <div style="font-size: 2rem; font-weight: 500">
+        <span style="font-size: 3rem">A</span>DD
+        <span style="font-size: 3rem">P</span>LAYER
+      </div>
+      <br />
+      <form class="addPlayerForm">
+        <input type="text" placeholder="First Name" />
+        <input type="text" placeholder="Last Name" />
+        <select id="countrySelect"></select>
+        <input type="number" placeholder="Player's Score" />
+        <button type="submit">Add Player</button>
+      </form>
+      <div class="formError"></div>
+    </div>
+
+    <div class="players">
+      <div style="font-size: 2rem; font-weight: 500">
+        <span style="font-size: 3rem">L</span>EADER<span style="font-size: 3rem"
+          >B</span
+        >OARD
+      </div>
+      <div class="championsCards"></div>
+      <div class="leaderboard-header">
+        <div style="text-align: start">&nbsp;&nbsp;Position</div>
+        <div style="text-align: start">Name</div>
+        <div>Country</div>
+        <div>Score</div>
+        <div>Date</div>
+        <div>Delete</div>
+      </div>
+      <div class="leaderboard"></div>
+    </div>
+  </body>
+  <script src="index.js"></script>
+</html>
